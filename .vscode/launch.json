@@ -13,7 +13,7 @@
             "console": "integratedTerminal",
             "justMyCode": true
             // add the virtual environment
-            // "pythonPath": "${workspaceFolder}/.venv/bin/python"
+            // "python": "${workspaceFolder}/.venv/bin/python"
         }
         
     ]
