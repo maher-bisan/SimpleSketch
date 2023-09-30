@@ -8,7 +8,7 @@ version = "0.0.1"
 
 authors = [
   { name="Maher Bisan", email="maherbisan95@gmail.com" },
-  { name="Dareen Khair", email="author2@example.com" }
+  { name="Dareen Khair"}
 ]
 
 description = "Program Synthesis by Sketching"
@@ -17,7 +17,7 @@ readme = "README.md"
 
 keywords =  ["Synthesis", "CEGIS", "Program Synthesis", "Sketching", "PBE"]
 
-license = {file = "LICENSE"}
+license = "MIT"
 
 requires-python = ">=3.11"
 
@@ -44,7 +44,6 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["src"]
 # include = ["*"]
-# exclude = ["src/simple_sketch/while_lang/syntax_v1.py"]
 namespaces = false
 
 [tool.setuptools]

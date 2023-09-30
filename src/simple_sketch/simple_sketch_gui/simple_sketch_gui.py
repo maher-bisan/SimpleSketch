@@ -616,17 +616,41 @@ class ControlFrame(ctk.CTkFrame):
     def __init__(self,  master, **kw):
         super().__init__(master, **kw)
         self.propagate(False)
-        self.configure(height=250, width=250)
+        self.configure(height=250, width=200)
         self.grid_columnconfigure((0,1,2), weight=1)
-        self.grid_rowconfigure((0), weight=1)
-        enable_resizing(self)
+        # self.grid_rowconfigure((0,1), weight=0)
+        # self.grid_rowconfigure((1,2), weight=1)
+        # self.grid_rowconfigure((2), weight=2)
+        # enable_resizing(self)
+        
+        # Add Entrys for timeout, number of unrolls, max number of iterations
+        timeout_label = ctk.CTkLabel(self, text="Timeout (ms)", font=ctk.CTkFont(weight="bold", size=10))
+        timeout_label.grid(row=0, column=0, padx=(20, 5), pady=(5,5), sticky="nsew")
+        self.timeout_entry = ctk.CTkEntry(self, width=15, height=10)
+        self.timeout_entry.grid(row=1, column=0, padx=(20, 20), pady=(5,20), sticky="we")
+        self.timeout_entry.insert("0", "1000")
+        
+        unroll_label = ctk.CTkLabel(self, text=" # of loop unrolling", font=ctk.CTkFont(weight="bold", size=10))
+        unroll_label.grid(row=0, column=2, padx=(20, 5), pady=(5,0), sticky="nsew")
+        self.unroll_entry = ctk.CTkEntry(self, width=15, height=10)
+        self.unroll_entry.grid(row=1, column=2, padx=(20, 20), pady=(5,20), sticky="we")
+        self.unroll_entry.insert("0", "8")
+        
+        iterations_label = ctk.CTkLabel(self, text="Max iterations #", font=ctk.CTkFont(weight="bold", size=10))
+        iterations_label.grid(row=0, column=1, padx=(20, 5), pady=(5,0), sticky="nsew")
+        self.iterations_entry = ctk.CTkEntry(self, width=15, height=10)
+        self.iterations_entry.grid(row=1, column=1, padx=(20, 20), pady=(5,20), sticky="we")
+        self.iterations_entry.insert("0", "100")
+        
         
         buttons: List[ctk.CTkButton] = []
         for i, btn in enumerate(['run', 'clear', 'debug']):
-            buttons.append(ctk.CTkButton(self, text=btn, width=50, height=50))
-            buttons[-1].grid(row=0, column=i, padx=20, pady=(10,10), sticky="we")
+            buttons.append(ctk.CTkButton(self, text=btn, width=50, height=40))
+            buttons[-1].grid(row=2, column=i, padx=(20,20), pady=(20,20), sticky="we")
         
         self.run_btn, self.clear_btn, self.debug_btn = buttons
+        
+        
 
 class MainFrame(ctk.CTkScrollableFrame):
     
@@ -670,7 +694,7 @@ class MainFrame(ctk.CTkScrollableFrame):
       
         # --------- Control frame -------
         self.control_frame = ControlFrame(master=self, border_width=1, border_color="gray")
-        self.control_frame.grid(row=3, column=2, padx=(5, 5), pady=(5, 5), sticky="ns")
+        self.control_frame.grid(row=3, column=2, padx=(5, 5), pady=(5, 5), sticky="nsew")
         self.grid_rowconfigure(3, weight=1)
         self.grid_columnconfigure(2, weight=1)
         
@@ -694,6 +718,12 @@ class MainFrame(ctk.CTkScrollableFrame):
         program_to_sketch = self.program_to_sketch.get_program_str()
         inout_examples_list = self.inout_examples_frame.get_inout_examples()
         
+        timeout = int(self.control_frame.timeout_entry.get())
+        unroll = int(self.control_frame.unroll_entry.get())
+        iterations = int(self.control_frame.iterations_entry.get())
+        
+        
+        
         output_textbox = self.output_frame.get_output_textbox()
         output_textbox.delete("0.0", "end")
         output_textbox.tag_config("red", foreground="red")
@@ -702,12 +732,16 @@ class MainFrame(ctk.CTkScrollableFrame):
         output_textbox.tag_config("magenta", foreground="magenta")
         
         try:
-            synthesizer_res = SimpleSketch(max_itr_num=100).synthesize(
+            synthesizer_res = SimpleSketch(
+                max_itr_num=iterations, 
+                timeout = timeout, 
+                num_to_unroll_while_loops = unroll
+                ).synthesize(
                 program = program_to_sketch,
                 input_output_examples = inout_examples_list,
                 pre_condition = f"{pre_cond} --types={'{'}{pre_vars}{'}'}",
                 post_condition = f"{post_cond} --types={'{'}{post_vars}{'}'}",
-                loop_inv = f"{linv} --types={'{'}{linv_vars}{'}'}"
+                loop_inv = f"{linv} --types={'{'}{linv_vars}{'}'}",
             )
             if synthesizer_res:
                 synthesized_program = synthesizer_res[0]
