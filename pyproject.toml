@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=>=61.2.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "simple_sketch"
+version = "0.0.1"
+
+authors = [
+  { name="Example Author", email="author@example.com" },
+  { name="Example2 Author2", email="author2@example.com" }
+]
+
+description = "A short description of the package."
+
+readme = "README.md"
+
+keywords =  ["Earley", "LALR", "parser", "parsing", "ast"]
+
+license = {file = "LICENSE"}
+
+requires-python = ">=3.11"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    # python -m pip install -r requirements.txt
+    "z3-solver==4.12.2.0",
+    "lark==1.1.7",
+    "pyyaml",
+    "customtkinter==5.2.0",
+    "graphviz==0.20.1"
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/maher-bisan/SimpleSketch"
+# "Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+# "documentation" = ""
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+# include = ["*"]
+# exclude = ["src/simple_sketch/while_lang/syntax_v1.py"]
+namespaces = false
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+# "*" = ["*.lark", "*.md"]
+"simple_sketch" = ["*.lark", "*.md", "*.json", "*.yaml"]
+
+
+[project.scripts]
+simple_sketch = "simple_sketch.simple_sketch_cli:simple_sketch_cli"
+
+[project.gui-scripts]
+simple_sketch_gui = "simple_sketch.simple_sketch_gui:simple_sketch_gui"
+
+
+[project.optional-dependencies]
+dev = [
+    "build==1.0.3",
+    "ipykernel==6.25.2",
+    "mkdocs==1.5.3",
+    "Pillow",   
+    "customtkinter",
+]

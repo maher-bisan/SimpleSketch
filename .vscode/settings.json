@@ -1,0 +1,22 @@
+{
+    "python.analysis.extraPaths": [
+        "./simple_sketch",
+        "./lib",
+        "./lib/lark",
+        "./src",
+        "./ide",
+        "./src/while_lang",
+        "./src/while_lang/syntax",
+        "src/while_lang/syntax",
+        "./src/synthesis"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "cSpell.words": [
+        "cegis"
+    ],
+    "ruff.args": [
+        // --ignore <RULE_CODE> //Comma-separated list of rule codes to disable
+        "--ignore=E402",
+        "--max-line-length=120",
+    ],
+}

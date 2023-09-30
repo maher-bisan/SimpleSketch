@@ -1,0 +1,12 @@
+.venv/
+
+dist/
+
+src/simple_sketch.egg-info/
+
+site/
+sites/
+
+
+tmp/examples_tmp/
+tmp/test_tmp/
