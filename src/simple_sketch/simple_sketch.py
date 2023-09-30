@@ -1,6 +1,6 @@
 """
  - file: simple_sketch.py
- - author: <NAME> <<EMAIL>>
+ - author: Maher Bisan 
  - date: September 2023
  - description: Simple Sketch module for the project. 
     This module contains the simple sketch class, which is used to represent the simple sketch of the program.
@@ -12,9 +12,9 @@ from typing import List, Tuple, TypeAlias
 from .synthesis.specification import Specification, Spec_Example
 from .synthesis.synthesizer import Synthesizer
 
-DEBUG = True
-#TODO: change the `if DEBUG` and the print to Log file
 from .utilities.Utilities import Colors
+#TODO: change the `if self.debug` and the print to Log file
+
 
 
 class SimpleSketch:
@@ -25,7 +25,7 @@ class SimpleSketch:
     Example: TypeAlias = Tuple[str, str]
     
     
-    def __init__(self, timeout: int = 100, max_itr_num: int = 10, num_to_unroll_while_loops: int = 8):
+    def __init__(self, timeout: int = 100, max_itr_num: int = 10, num_to_unroll_while_loops: int = 8, debug: bool = False):
         """
         Initialize the simple sketch.
         
@@ -34,6 +34,8 @@ class SimpleSketch:
         * `timeout` (int): the timeout for solving the z3 problem.
         * `max_itr_num` (int): the maximum number of iterations for solving the z3 problem.
         * `num_to_unroll_while_loops` (int): the number of while loops to unroll.
+        * `debug` (bool): the debug mode.
+        
         
         Example
         -------
@@ -51,6 +53,7 @@ class SimpleSketch:
         self.timeout = timeout
         self.max_itr_num = max_itr_num
         self.num_to_unroll_while_loops = num_to_unroll_while_loops
+        self.debug = debug
         
     def synthesize(self, 
                     program: str,
@@ -119,7 +122,8 @@ class SimpleSketch:
                                 program = program,
                                 timeout = self.timeout, 
                                 max_itr_num = self.max_itr_num, 
-                                num_to_unroll_while_loops = self.num_to_unroll_while_loops
+                                num_to_unroll_while_loops = self.num_to_unroll_while_loops,
+                                debug=self.debug
                             )
         
         inout_examples = [Spec_Example((in_e, vars_types), (out_e, vars_types)) 

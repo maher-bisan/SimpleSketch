@@ -1,6 +1,6 @@
 """
  - file: simple_sketch_gui.py
- - author: <NAME> <<EMAIL>>
+ - author: Maher Biasn
  - date: September 2023
  - description: simple sketch gui module for the project. 
     This module is used to create a simple gui for the project, using tkinter.
@@ -29,7 +29,6 @@ ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark
 ctk.set_widget_scaling(1.0)
 
 
-DEBUG = True
 
 # To Enable Resizing
 def start_resize(event, master):
@@ -299,8 +298,9 @@ class InfoWindoButton(ctk.CTkButton):
 
 class InOutExamplesFrame(ctk.CTkScrollableFrame):
     
-    def __init__(self,  master, **kw):
+    def __init__(self,  master, debug: bool = False, **kw):
         super().__init__(master, **kw)
+        self.debug = debug
         # Bug in the mouse-wheel binding of CTkScrollableFrame.
         # https://github.com/TomSchimansky/CustomTkinter/issues/1356#issuecomment-1474104298
         self.bind("<Button-4>", lambda e: self._parent_canvas.yview("scroll", -1, "units"))
@@ -362,7 +362,7 @@ class InOutExamplesFrame(ctk.CTkScrollableFrame):
         in_example = self.example['Input Example'].get("0.0", "end")
         out_example = self.example["Output Example"].get("0.0", "end")
         examples_vars = self.example["Vars"].get("0.0", "end")
-        if DEBUG:
+        if self.debug:
             print(f"in_example: {in_example}")
             print(f"out_example: {out_example}")
             print(f"examples_vars: {examples_vars}")
@@ -630,8 +630,9 @@ class ControlFrame(ctk.CTkFrame):
 
 class MainFrame(ctk.CTkScrollableFrame):
     
-    def __init__(self,  master, **kw):
+    def __init__(self,  master, debug: bool = False, **kw):
         super().__init__(master, **kw)
+        self.debug = debug
         # Bug in the mouse-wheel binding of CTkScrollableFrame.
         # https://github.com/TomSchimansky/CustomTkinter/issues/1356#issuecomment-1474104298
         self.bind("<Button-4>", lambda e: self._parent_canvas.yview("scroll", -1, "units"))
@@ -653,8 +654,7 @@ class MainFrame(ctk.CTkScrollableFrame):
         ## -------- main.program_to_sketch frame --------
         self.program_to_sketch = ProgToSketchFrame(self, bg_color="transparent", border_width=1, border_color="gray")
         self.program_to_sketch.grid(row=2, column=0, padx=20, pady=(10,10), columnspan=2, sticky="nsew")
-        # input_frame.grid_columnconfigure(0, weight=1)
-        # input_frame.grid_rowconfigure(0, weight=1)
+
 
         # --------- inout_examples frame --------
         self.inout_examples_frame = InOutExamplesFrame(master=self, border_width=1, border_color="gray")
@@ -730,12 +730,12 @@ class MainFrame(ctk.CTkScrollableFrame):
                 output_textbox.insert("end", f"     6. Check if the `loop_inv` is correct\n", "magenta")
         except Exception as e:
             output_textbox.insert("end", "ERROR:\n", "red")
-            if DEBUG:
+            if self.debug:
                 output_textbox.insert("end", f"{''.join(traceback.format_exception(e))}")
             else:
                 output_textbox.insert("end", f"{''.join(traceback.format_exception_only(e))}")
         
-        if DEBUG:
+        if self.debug:
             print(dedent(output_textbox.get("0.0", "end")))
    
     def debug_btn_event(self, event):

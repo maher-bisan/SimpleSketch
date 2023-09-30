@@ -9,15 +9,13 @@ specification class, which is used to represent the specification of the program
 
 
 
-from typing import Callable, Dict, List, Union, Set, Any, Tuple, TypeAlias, NewType
+from typing import Callable, Dict, List, Union, Set, Tuple
 import z3
 
-from simple_sketch.while_lang.while_language import  Env, Env_Key, Env_Val, Hole_Id, Hole_Val, Program_t
+from simple_sketch.while_lang.while_language import  Env
 
 from simple_sketch.z3_handler.z3_text_parser import Z3Parser
-from simple_sketch.z3_handler.z3_handler import solve_z3, substitute_z3, get_all_z3_vars, print_z3
 
-DEBUG = True
 
 
 Spec_t = List[z3.BoolRef] # assertions in the specification

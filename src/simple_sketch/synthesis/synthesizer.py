@@ -19,9 +19,8 @@ from simple_sketch.while_lang.while_language import WhileLang, Env, Env_Key, Env
 
 from .specification import Specification, Spec_Example
 
-DEBUG = True
-#TODO: change the `if DEBUG` and the print to Log file
 from simple_sketch.utilities import Colors
+#TODO: change the `if  self.debug` and the print to Log file
 
 class Synthesizer:
     """
@@ -38,21 +37,25 @@ class Synthesizer:
                 program: Program_t | str | None = None,
                 timeout: int = 100,
                 max_itr_num: int = 10, 
-                num_to_unroll_while_loops: int = 8):
+                num_to_unroll_while_loops: int = 8,
+                debug: bool = False
+                ):
         """
         Initialize the synthesizer.
         
         Args:
         ----
-            * program (Program_t | str | None): The program to synthesize.
-            * timeout (int): The timeout for the cegis loop.
-            * max_itr_num (int): The maximum number of iterations for the cegis loop. 
-            * num_to_unroll_while_loops (int): The number of times to unroll the while loops.
+            * `program` (Program_t | str | None): The program to synthesize.
+            * `timeout` (int): The timeout for the cegis loop.
+            * `max_itr_num` (int): The maximum number of iterations for the cegis loop. 
+            * `num_to_unroll_while_loops` (int): The number of times to unroll the while loops.
+            * `debug` (bool): The debug mode.
         
         """
         # TODO: handel the `timeout` and `max_itr_num` in the `cegis` class
         self.timeout = timeout
         self.max_itr_num = max_itr_num
+        self.debug = debug
         self.num_to_unroll_while_loops = num_to_unroll_while_loops
         self._synthesized_program = None
         self._while_program = None
@@ -143,7 +146,7 @@ class Synthesizer:
 
         X_in = p_vars.difference(p_holes)
         
-        if DEBUG:
+        if self.debug:
             print("while free program:", self.while_free_program.to_str())
             print("p_env:", p_env)
             print_z3(assumptions, "assumptions:")
@@ -151,7 +154,7 @@ class Synthesizer:
             print("X:", X_in)
             print("C:", p_holes)
    
-        if DEBUG:
+        if  self.debug:
             print(assumptions, "assumptions:")
             print(verification_conditions, "verification_conditions:")
         
@@ -196,7 +199,7 @@ class Synthesizer:
         # verify the filled program for: `{P}program{Q}`
         verify_res = self.verify_filled_program(filled_program, self.specification)
         
-        if DEBUG:
+        if  self.debug:
             print(f"{Colors.YELLOW}\n>>> filled_program:{Colors.RESET}\n", filled_program.to_str())
             print(f"{Colors.YELLOW}>>> holes_vals:{Colors.RESET}\n", holes_vals)
         

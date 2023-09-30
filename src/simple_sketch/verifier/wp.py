@@ -31,9 +31,7 @@ from simple_sketch.utilities import Colors, cprint
 
 
 # TODO: Add log file
-# TODO: Change to False, before submitting
-DEBUG = True
-# DEBUG = Flase
+
 
 OP = {
     "+": operator.add,
@@ -53,8 +51,6 @@ OP = {
 
 # FIXME: Check if this is correct
 OP["/"] = operator.truediv
-
-
 
 
 def get_pvars_and_holes(ast: Tree) -> Set[str]:
@@ -111,12 +107,6 @@ def make_env(pvars: Set[Tuple[str, str]]) -> Dict[Env_Key, Env_Val]:
     return WhileLang().make_env(pvars)
     
 def upd(d: Dict[Env_Key, Env_Val], k: Env_Key, v: Env_Val):
-    # elif expr.root == "array_pos_assign":
-    # array_id = expr.subtrees[1].subtrees[0].root
-    # idx = expr.subtrees[2].subtrees[1].root
-    # val = eval_expr(expr.subtrees[3], env)
-    # # return z3.Store(env[array_id], z3.Int(idx), val)
-    # return z3.Store(array_id, idx, val)
     d = d.copy()
     d[k] = v
     return d
@@ -328,7 +318,8 @@ def verify(
     Q: Callable[[Env], z3.BoolRef],
     linv: Callable[[Env], z3.BoolRef] | None = None,
     pvars: Set[Tuple[str, str]] = set(),
-    env: Env = {}
+    env: Env = {},
+    debug: bool = False,
 ) -> bool:
     """
     Verifies a Hoare triple {P} program {Q}
@@ -390,7 +381,7 @@ def verify(
     # Create the verification condition
     verify_cond = Implies(precondition, wp_condition)
     
-    if DEBUG:
+    if debug:
         print(f"{Colors.BG_YELLOW}{Colors.BLACK}>>> verify_cond:\n{Colors.RESET}{verify_cond}\n")
         print(f"{Colors.BG_YELLOW}{Colors.BLACK}>>> precondition:\n{Colors.RESET}{precondition}\n")
         print(f"{Colors.BG_YELLOW}{Colors.BLACK}>>> wp_condition:\n{Colors.RESET}{wp_condition}\n")
@@ -404,7 +395,7 @@ def verify(
     # solver.set(timeout=1000) # 1000 milliseconds
 
     # TODO: add log file
-    if DEBUG:
+    if debug:
         import html
         from z3 import set_html_mode
 

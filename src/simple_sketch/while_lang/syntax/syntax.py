@@ -1,29 +1,13 @@
 
-# import sys
-# from pathlib import Path
-# # sys.path.extend(str(p) for p in [
-# #     Path(__file__).parent.parent.parent, 
-# #     Path(__file__).parent.parent.parent.parent, 
-# #     Path(__file__).parent.parent.parent.parent/'lib'
-# #     ] if p not in sys.path)
 
-# sys.path.extend(str(p) for p in [
-#     Path(__file__).parent.parent.parent.parent  # root
-# ] if p not in sys.path)
 
-# from z3_handler.z3_text_parser import Z3Parser
-from simple_sketch.z3_handler.z3_text_parser import Z3Parser
 
 from simple_sketch.lib.adt.tree import Tree  
-# from ...z3_handler.z3_text_parser.z3_text_parser import Z3Parser
 
 from lark import Lark, Transformer, v_args
-from typing import List, Dict, Union, Tuple, Callable, Any, TypeAlias, Set
+from typing import List, Dict, Union, Tuple, TypeAlias, Set
 
 from simple_sketch.utilities.Utilities import Colors
-DEBUG = True
-DEBUG_WhileParser_postprocess = False
-DEBUG_WhileParser_Grammar = False
 
 
 
@@ -693,12 +677,12 @@ class WhileParser:
     -----------
     
     """
-    def __init__(self):
+    def __init__(self, debug: bool = False):
         """
          
         """
         self.parser = Lark.open('while_lang.lark',  rel_to=__file__, parser='earley', 
-                                keep_all_tokens=True, debug=DEBUG)        
+                                keep_all_tokens=True, debug=debug)        
     def __call__(self, program_text) -> Tree | None:
         """
         

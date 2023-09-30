@@ -26,8 +26,6 @@ from src.verifier import verifier, wp
 from z3_handler.z3_handler import solve_z3, substitute_z3, get_all_z3_vars, print_z3
 
 
-DEBUG = True
-#TODO: change the `if DEBUG` and the print to Log file
 from utilities.Utilities import Colors, cprint
 
 

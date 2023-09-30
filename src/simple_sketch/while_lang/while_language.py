@@ -24,9 +24,7 @@ from simple_sketch.z3_handler.z3_handler import Z3_TYPE
 from simple_sketch.utilities.Utilities import Colors, cprint
 
 # TODO: Add log file
-# TODO: Change to False, before submitting
-DEBUG = True
-# DEBUG = Flase
+
 
 # Hole_Id = str
 # TODO
@@ -77,7 +75,7 @@ class WhileLang():
     _program: Program_t # The program as string
     
     # Define the class methods
-    def __init__(self, program: Program_t | str | None = None) -> None:
+    def __init__(self, program: Program_t | str | None = None, debug: bool =False) -> None:
         """
         WhileLang constructor
         -------
@@ -96,6 +94,7 @@ class WhileLang():
         -------
             Exception: If the program is not valid. The program is not valid if it contains a `while_lang` syntax error.
         """
+        self.debug = debug
         if program:
             self._program = program
             ast = WhileParser()(program)

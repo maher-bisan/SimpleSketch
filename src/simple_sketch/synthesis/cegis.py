@@ -17,12 +17,8 @@ from simple_sketch.z3_handler import Z3_TYPE, Z3_VAL
 
 from simple_sketch.while_lang.while_language import  Hole_Id, Hole_Val
 
-
-
-
-DEBUG = True
-#TODO: change the `if DEBUG` and the print to Log file
 from simple_sketch.utilities import Colors, cprint
+#TODO: change the `if self.debug` and the print to Log file
 
 class Cegis():
     """
@@ -58,7 +54,8 @@ class Cegis():
                 X: Set[Tuple[str,str]],
                 C: Set[Tuple[str,str]],
                 max_itr_num: int = 5,
-                timeout: int = 1000
+                timeout: int = 1000,
+                debug: bool = False
                 ) -> None:
         """
         Initialize the Cegis algorithm.
@@ -70,6 +67,7 @@ class Cegis():
             * `C` (Set[Tuple[str,str]]): The holes variables of the program.
             * `max_itr_num` (int): The maximum number of iterations to run the CEGIS loop.
             * `timeout` (int): The timeout for each iteration of the CEGIS loop (the timeout for the solver).
+            * `debug` (bool): The debug mode.
        
         Raises:
             * Exception: If the length of `verification_conditions` is less than the length of `assumptions`.
@@ -83,13 +81,14 @@ class Cegis():
         Notes:
             * The length of `verification_conditions` and `assumptions` must be the same.
         """
+        self.debug = debug
         
         if len(verification_conditions) < len(assumptions):
             raise Exception(f"The length of `verification_conditions` ({len(verification_conditions)}) must be less or equal to the length of `assumptions` ({len(assumptions)})")
         
         # make the length of `verification_conditions` and `assumptions` the same
         if len(verification_conditions) > len(assumptions):
-            if DEBUG:
+            if self.debug:
                 cprint(f"The length of `verification_conditions` ({len(verification_conditions)}) is more than the length of `assumptions` ({len(assumptions)}), so we add `True` to the end of `assumptions`", color=Colors.RED)
             assumptions.extend([z3.BoolVal(True)] * (len(verification_conditions) - len(assumptions)))
 
@@ -151,7 +150,7 @@ class Cegis():
             if len(X_in_vals) > 0:
                 formulas.append(z3.Not( z3.And([x_in == x_in_val for x_in, x_in_val in X_in_vals]) ))
                 
-        if DEBUG:
+        if self.debug:
             print(f"{Colors.BG_BRIGHT_MAGENTA}{Colors.BLACK}>>> hole_assignments formulas:{Colors.RESET}\n")
             print(f"{Colors.BG_BRIGHT_MAGENTA}{Colors.BLACK}{formulas}:{Colors.RESET}\n")
         return formulas
@@ -169,7 +168,7 @@ class Cegis():
         cprint(f">>>> The C Values: ",self.C_in_new_values_to_try, color=Colors.BLUE)
         
         model = solve_z3(formulas, name="The program to verify with the C values")
-        if DEBUG:
+        if self.debug:
             print("verify_res: ", model)
         return model
     
@@ -241,7 +240,7 @@ class Cegis():
             * `True`: If new C values are found.
             * `False` (bool): If no new C values are found.
         """
-        if DEBUG:
+        if self.debug:
             print(f"{Colors.BRIGHT_MAGENTA}>>> solve_constraint formulas{Colors.RESET}\n")
             print(f"{Colors.BRIGHT_MAGENTA}>>> Now, after we got the new X values, we try to get new C values (by using the solver){Colors.RESET}\n")
             

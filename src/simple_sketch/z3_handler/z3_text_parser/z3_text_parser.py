@@ -14,9 +14,6 @@ import z3
 
 from ..z3_handler import Z3_TYPE
 
-DEBUG = True
-DEBUG_WhileParser_postprocess = False
-DEBUG_WhileParser_Grammar = False
 
 class Z3Transformer(Transformer):
     OP = {

@@ -8,10 +8,9 @@ from typing import Callable, Dict, List, Set, Any, Tuple
 import z3
 
 
-
-DEBUG = True
-#TODO: change the `if DEBUG` and the print to Log file
 from simple_sketch.utilities import Colors, cprint
+
+#TODO: Add to Log file
 
 
 
