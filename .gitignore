@@ -3,12 +3,9 @@
 dist/
 
 src/simple_sketch.egg-info/
-
+src/SimpleSketch.egg-info/
+src/simpleSketch.egg-info/
 site/
 sites/
-
-
-tmp/examples_tmp/
-tmp/test_tmp/
 
 tmp/

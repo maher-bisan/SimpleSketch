@@ -60,7 +60,7 @@ pip install .
 ### Install from PyPI
 
 ```
-pip install simple_sketch
+pip install simpleSketch
 ```
 
 ## Documentation
@@ -73,15 +73,18 @@ Under construction. In the meantime, you can read the docstrings in the code.
 
 In the terminal, run the following command:
 
+#### If you installed from PyPI
+
+```
+simpleSketch-gui
+```
+
+#### If you built from source
+
 ```
 python3.11 src/simple_sketch/simple_sketch_gui/simple_sketch_gui.py
 ```
 
-Or, if used pip to install the package, run the following command:
-
-```
-simple_sketch_gui
-```
 
 ### Examples
 

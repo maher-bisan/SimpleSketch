@@ -3,7 +3,7 @@ requires = ["setuptools>=>=61.2.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "simple_sketch"
+name = "simpleSketch"
 version = "0.0.4"
 
 authors = [
@@ -59,10 +59,10 @@ simple_sketch = ["*.lark", "*.md", "*.json", "*.yaml"]
 "simple_sketch.simple_sketch_gui" = ["assets/**/*"]
 
 [project.scripts]
-simple_sketch = "simple_sketch.simple_sketch_cli:simple_sketch_cli"
+simpleSketch = "simple_sketch.simple_sketch_cli:simple_sketch_cli"
 
 [project.gui-scripts]
-simple_sketch_gui = "simple_sketch.simple_sketch_gui:simple_sketch_gui"
+simpleSketch-gui = "simple_sketch.simple_sketch_gui:simple_sketch_gui"
 
 
 [project.optional-dependencies]
