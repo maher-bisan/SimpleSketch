@@ -3,8 +3,8 @@ requires = ["setuptools>=>=61.2.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "SimpleSketch"
-version = "0.0.1"
+name = "simple_sketch"
+version = "0.0.4"
 
 authors = [
   { name="Maher Bisan", email="maherbisan95@gmail.com" }
@@ -57,7 +57,6 @@ include-package-data = true
 "*" = ["*.lark", "*.md", "*.json", "*.yaml"]
 simple_sketch = ["*.lark", "*.md", "*.json", "*.yaml"]
 "simple_sketch.simple_sketch_gui" = ["assets/**/*"]
-# "simple_sketch.simple_sketch_gui" = ["assets/**/*", "assets/examples/*", "assets/examples/**/*.yaml"]
 
 [project.scripts]
 simple_sketch = "simple_sketch.simple_sketch_cli:simple_sketch_cli"
