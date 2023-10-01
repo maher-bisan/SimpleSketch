@@ -80,9 +80,13 @@ def enable_resizing(master, horizontal=True, vertical=True):
 
 
 
-class SideBarFrame(ctk.CTkFrame):
+class SideBarFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, debug: bool = False,**kw):
         super().__init__(master, **kw)
+        # Bug in the mouse-wheel binding of CTkScrollableFrame.
+        # https://github.com/TomSchimansky/CustomTkinter/issues/1356#issuecomment-1474104298
+        self.bind("<Button-4>", lambda e: self._parent_canvas.yview("scroll", -1, "units"))
+        self.bind("<Button-5>", lambda e: self._parent_canvas.yview("scroll", 1, "units"))
         self.debug = debug
         self.grid_rowconfigure(6, weight=1)
         
@@ -107,7 +111,8 @@ class SideBarFrame(ctk.CTkFrame):
         examples_optionemenu: tk.Menu = self.examples_optionemenu['menu']
         
         
-        self.set_examples_menu(master_menu = examples_optionemenu, examples_path = f"{pathlib.Path(__file__).resolve().parent}/assets/examples")
+        self.set_examples_menu(master_menu = examples_optionemenu, examples_path = f"{pathlib.Path(__file__).resolve().parent}{os.sep}assets{os.sep}examples")
+        
         
         # Icons
         icons_buttons = ['GitHub.png', 'Pypi.png', 'Docs.png']
@@ -168,7 +173,7 @@ class SideBarFrame(ctk.CTkFrame):
             else:
                 return "" if d is None else d
         
-        self.examples_mvar.set(example_path.split("simple_sketch_gui/assets/examples/")[1][:-5])
+        self.examples_mvar.set(example_path.split(f"simple_sketch_gui{os.sep}assets{os.sep}examples{os.sep}")[1][:-5])
         
         try:
             with open(example_path, "r") as f:

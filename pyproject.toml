@@ -7,12 +7,12 @@ name = "simpleSketch"
 version = "0.0.5"
 
 authors = [
-  { name="Maher Bisan", email="maherbisan95@gmail.com" }
+  {name="Maher Bisan", email="maherbisan95@gmail.com"}
 ]
 
 maintainers = [
-  { name="Maher Bisan", email="maherbisan95@gmail.com" },
-  { name="Dareen Khair", email="dareen17.7@gmail.com" },
+  {name="Dareen Khair", email="dareen17.7@gmail.com"},
+  {name="Maher Bisan", email="maherbisan95@gmail.com"},
 ]
 
 description = "Program Synthesis by Sketching"
