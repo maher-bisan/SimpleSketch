@@ -81,14 +81,15 @@ def enable_resizing(master, horizontal=True, vertical=True):
 
 
 class SideBarFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, debug: bool = False,**kw):
+    def __init__(self, master, main_frame ,debug: bool = False,**kw):
         super().__init__(master, **kw)
         # Bug in the mouse-wheel binding of CTkScrollableFrame.
         # https://github.com/TomSchimansky/CustomTkinter/issues/1356#issuecomment-1474104298
         self.bind("<Button-4>", lambda e: self._parent_canvas.yview("scroll", -1, "units"))
         self.bind("<Button-5>", lambda e: self._parent_canvas.yview("scroll", 1, "units"))
         self.debug = debug
-        self.grid_rowconfigure(6, weight=1)
+        self.main_frame = main_frame
+        self.grid_rowconfigure(6, weight=2)
         
         
         self.logo_label = ctk.CTkLabel(self, text="Simple Sketch\nSideBar", font=ctk.CTkFont(size=20, weight="bold"))
@@ -196,15 +197,15 @@ class SideBarFrame(ctk.CTkScrollableFrame):
                 post_condition = example_file.get("post_condition", {})
                 loop_inv = example_file.get("loop_inv", {})
                 
-                self.master.main_frame.conditions_frame.insert_conditions(
+                self.main_frame.conditions_frame.insert_conditions(
                         pre_cond = pre_condition.get("condition", ""), pre_cond_vars = pre_condition.get("condition_vars", ""),
                         post_cond = post_condition.get("condition", ""), post_cond_vars = post_condition.get("condition_vars", ""),
                         loop_inv = loop_inv.get("condition", ""), loop_inv_vars = loop_inv.get("condition_vars", "")
                         )
                 
-                self.master.main_frame.program_to_sketch.insert_program(program)
-                self.master.main_frame.inout_examples_frame.insert_inout_examples(input_output_examples)
-                self.master.main_frame.output_frame.clear()
+                self.main_frame.program_to_sketch.insert_program(program)
+                self.main_frame.inout_examples_frame.insert_inout_examples(input_output_examples)
+                self.main_frame.output_frame.clear()
                 
                 
         except Exception as e:
@@ -821,13 +822,14 @@ class App(ctk.CTk):
         self.geometry(f"{self.width}x{self.height}")
         # self.resizable(False, False)
         
-        # --------- sidebar frame --------
-        self.sidebar_frame = SideBarFrame(master=self, width=140, corner_radius=0)
-        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-
         # --------- main frame --------
         self.main_frame = MainFrame(master=self)
         self.main_frame.grid(row=0, column=1, rowspan=4, columnspan=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
+        
+        # --------- sidebar frame --------
+        self.sidebar_frame = SideBarFrame(master=self, main_frame=self.main_frame, width=140, corner_radius=0)
+        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
+
        
         self.grid_rowconfigure((0,1,2,3), weight=1)
         self.grid_columnconfigure((1,2,3), weight=1)

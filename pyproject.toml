@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "simpleSketch"
-version = "0.0.5"
+version = "0.0.7"
 
 authors = [
   {name="Maher Bisan", email="maherbisan95@gmail.com"}
