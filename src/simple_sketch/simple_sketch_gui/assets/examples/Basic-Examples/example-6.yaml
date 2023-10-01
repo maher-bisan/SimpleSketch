@@ -1,7 +1,10 @@
 program: "
-i := ??;
-y := i*i + x * ??;
-assert (y == x + x + 9);
+if (bool?) {\n
+  x:=1;\n
+} else{\n
+  x:=2;\n
+}\n
+assert(x ==2);
 "
 input_output_examples:
   - input: 

@@ -4,13 +4,8 @@
 // Description: Grammar for the (typed) while language (while_lang).
 // Using the Lark parser ( https://github.com/lark-parser/lark )
 //
-// Author: <NAME> (<EMAIL>) //TODO
-// Created On: <DATE>
+// Author: Maher Bisan (maherbisan95@gmail.com)
 //
-// TODO: Add 'Copyright' and 'License'
-// Copyright (c) 2021 <NAME> and <NAME>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
 //------------------------------------------------------------------------------------------------
 
 
@@ -32,7 +27,7 @@
 // |  "while" expr "invariant" inv "do" s1 -> while_invariant // TODO
 |  "assert" "(" expr ")" ";" -> assert_stmt
 |  "assume" "(" expr ")" ";" -> assume_stmt
-|  block // TODO
+|  block
 | ";" -> empty_stmt
 
 block: "{" statements "}" -> block_stmt
@@ -69,16 +64,18 @@ type_: "int"
             
 
 ?atom: "(" expr ")" -> bracket_expr
-|   "??" -> hole //FIXME: check how to create holes with diffrent type
 |   var
+|   hole //FIXME: check how to create holes with diffrent type
 |   var "[" expr "]" -> array_access
 |   positive_int
 |   int_
 |   float_
 |   bool_
 
-?var: VAR_ID -> var_id
+// '??' is the default type for holes (i.e. `int`)
+hole: "??" | "int?" | "float?" | "bool?" | "array?" -> hole
 
+?var: VAR_ID -> var_id
 // |   var "[" expr "]" -> array_access
 
 
@@ -102,7 +99,7 @@ BOOL_OP.1: "and" | "or"
 REL_OP.2: "!=" | "==" | "<=" | ">=" | "<" | ">"
 ADD_SUB.3: "+" | "-"
 MUL_DIV.4: "*" | "/"
-POW.4: "**"  // TODO: check how to add it 
+POW.4: "**" 
 
 
 POSITIVE_INT.1: /[1-9][0-9]*/ | /0/

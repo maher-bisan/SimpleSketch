@@ -239,13 +239,23 @@ class WhileTransformer(Transformer):
         'Rule: `atom: "(" expr ")"`'
         return items[1]
     
+    # # hole
+    # def hole(self, items) -> Tree:
+    #     'Rule: `atom: "??"`'
+    #     hole_id = f'c{self.__holes_count}'
+    #     self.__holes_count += 1
+    #     # FIXME: check how to create holes with diffrent type
+    #     t = Tree('hole', [self.__make_type('int'), Tree(hole_id)])
+    #     return t
+    
     # hole
     def hole(self, items) -> Tree:
-        'Rule: `atom: "??"`'
+        'Rule: `hole: "??" | "int?" | "float?" | "bool?" | "array?"`'
         hole_id = f'c{self.__holes_count}'
         self.__holes_count += 1
-        # FIXME: check how to create holes with diffrent type
-        t = Tree('hole', [self.__make_type('int'), Tree(hole_id)])
+        # '??' is the default type for holes (i.e. `int`)
+        hole_ty = items[0].value[:-1] if len(items[0].value) > 2 else 'int'
+        t = Tree('hole', [self.__make_type(hole_ty), Tree(hole_id)])
         return t
     
     # array_access
@@ -523,7 +533,6 @@ class WhileTransformer(Transformer):
         elif self.__is_declared(var) and self.__expr_type(expr) is None:
             # FIXME: first, check if we need to check if the `expr.subtrees[0]` is `type` node before we change it.
             expr.subtrees[0] = var.subtrees[0].clone()
-            # setattr(expr, 'type', var.subtrees[0].subtrees[0].root)
         
         # TODO: try casting first?
         check_type2(var, expr)
@@ -594,14 +603,11 @@ class WhileTransformer(Transformer):
         # if `left` or `right` has no type, then give it the type of op `op_type`
         if self.__expr_type(left) is None:
             left.subtrees[0] = self.__make_type(op_type)
-            # setattr(left, 'type', op_type)
         if self.__expr_type(right) is None:
             right.subtrees[0] = self.__make_type(op_type)
-            # setattr(right, 'type', op_type)
         
         check_type({self.__expr_type(left)}, {op_type}); check_type({self.__expr_type(right)}, {op_type})
         t = Tree(op.value, [self.__make_type(res_type) ,left, right])
-        # setattr(t, 'type', res_type)
         return t
 
     def andor_expr(self, items) -> Tree:

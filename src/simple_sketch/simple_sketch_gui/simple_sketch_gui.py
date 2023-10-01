@@ -81,8 +81,9 @@ def enable_resizing(master, horizontal=True, vertical=True):
 
 
 class SideBarFrame(ctk.CTkFrame):
-    def __init__(self, master, **kw):
+    def __init__(self, master, debug: bool = False,**kw):
         super().__init__(master, **kw)
+        self.debug = debug
         self.grid_rowconfigure(6, weight=1)
         
         
@@ -133,7 +134,8 @@ class SideBarFrame(ctk.CTkFrame):
         """
          
         """
-        print(f"set_examples_menu: {examples_path}")
+        if self.debug :
+            print(f"set_examples_menu: {examples_path}")
         examples_list = []
         
         for file in os.listdir(examples_path):
@@ -148,7 +150,7 @@ class SideBarFrame(ctk.CTkFrame):
                 example_name = file[:-5]
                 # master_menu.add_command(label=example_name, command = lambda file_path=file_path: self.load_example(file_path))
                 master_menu.add_command(label=example_name, command = lambda file_path=file_path: self.load_example(file_path))
-        print(f"examples_list: {examples_list}")
+        if self.debug : print(f"examples_list: {examples_list}")
         return examples_list
     
     def load_example(self, example_path: str):
@@ -208,7 +210,6 @@ class SideBarFrame(ctk.CTkFrame):
             return
 
     def set_menu_example_event(self):
-        print("set_menu_example_event")
         new_example = self.examples_mvar.get()
         print(f"new_example: {new_example}")
         tkinter.messagebox.showinfo(title="Example", message= new_example)
@@ -650,6 +651,12 @@ class ControlFrame(ctk.CTkFrame):
         
         self.run_btn, self.clear_btn, self.debug_btn = buttons
         
+        # Add Checkboxes for the debug mode
+        self.debug_mode = ctk.BooleanVar(value=True)
+        self.debug_mode_checkbox = ctk.CTkCheckBox(self, text="Debug mode", variable=self.debug_mode)
+        # self.debug_mode_checkbox.grid(row=3, column=1, columnspan=3, padx=(20,20), pady=(20,20), sticky="we")
+        self.debug_mode_checkbox.grid(row=3, column=1, padx=(20,20), pady=(20,20), sticky="news")
+        
         
 
 class MainFrame(ctk.CTkScrollableFrame):
@@ -735,7 +742,8 @@ class MainFrame(ctk.CTkScrollableFrame):
             synthesizer_res = SimpleSketch(
                 max_itr_num=iterations, 
                 timeout = timeout, 
-                num_to_unroll_while_loops = unroll
+                num_to_unroll_while_loops = unroll,
+                debug = self.control_frame.debug_mode.get()
                 ).synthesize(
                 program = program_to_sketch,
                 input_output_examples = inout_examples_list,
