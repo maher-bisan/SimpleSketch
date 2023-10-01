@@ -67,6 +67,46 @@ pip install simpleSketch
 
 Under construction. In the meantime, you can read the docstrings in the code.
 
+## Grammar
+
+### `while_lang` grammar
+
+```lark
+start: statements
+
+statements: statement | statements statement
+
+statement: "skip" ";" | declaration | assignment | "if" "(" expr ")" "{" statements "}" 
+| "if" "(" expr ")" "{" statements "}"  "else" "{" statements "}" | "while" "(" expr ")" "{" statements "}" | "assert" "(" expr ")" ";" | "assume" "(" expr ")" ";"
+
+declaration: type id ";" | type id = expr ";" | array_type id ";" | array_type id = id ";"
+
+assignment: id = expr ";" | id [ expr ] = expr ";"
+
+array_type: "Array" type
+
+type: "int" | "float" | "bool"
+
+expr: expr "and" expr | expr "or" expr | "not" expr 
+| expr "==" expr | expr "!=" expr | expr "<" expr | expr ">" expr | expr "<=" expr | expr ">=" expr
+| expr "+" expr | expr "-" expr | expr "*" expr | expr "/" expr | expr "**" expr
+| atom
+
+atom: "(" expr ")" | id | hole | id "[" expr "]" | int | float | bool
+
+hole: "??" | "int?" | "bool?" | "float?"
+
+bool : "True" | "False"
+
+```
+<!-- 
+### Grammar for the condition (in z3 format)
+
+```lark
+
+```
+ -->
+
 ## Usage
 
 ### Open the GUI

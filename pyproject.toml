@@ -70,6 +70,10 @@ dev = [
     "build==1.0.3",
     "ipykernel==6.25.2",
     "mkdocs==1.5.3",
-    "Pillow",   
+    "Pillow",
     "twine"
+]
+
+dev-notebook = [
+    "ipykernel==6.25.2",
 ]
