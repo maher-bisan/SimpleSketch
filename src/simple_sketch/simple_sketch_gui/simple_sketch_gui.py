@@ -8,7 +8,7 @@
 
 
 import os
-import sys
+import pathlib
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk 
@@ -107,7 +107,7 @@ class SideBarFrame(ctk.CTkFrame):
         examples_optionemenu: tk.Menu = self.examples_optionemenu['menu']
         
         
-        self.set_examples_menu(master_menu = examples_optionemenu, examples_path = "src/simple_sketch/simple_sketch_gui/assets/examples")
+        self.set_examples_menu(master_menu = examples_optionemenu, examples_path = f"{pathlib.Path(__file__).resolve().parent}/assets/examples")
         
         # Icons
         icons_buttons = ['GitHub.png', 'Pypi.png', 'Docs.png']
@@ -168,7 +168,7 @@ class SideBarFrame(ctk.CTkFrame):
             else:
                 return "" if d is None else d
         
-        self.examples_mvar.set("/".join(example_path.split("/")[5:])[:-5])
+        self.examples_mvar.set(example_path.split("simple_sketch_gui/assets/examples/")[1][:-5])
         
         try:
             with open(example_path, "r") as f:
