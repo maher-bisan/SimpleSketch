@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: SimpleSketch
-Version: 0.0.1
+Version: 0.0.3
 Summary: Program Synthesis by Sketching
-Author: Dareen Khair
 Author-email: Maher Bisan <maherbisan95@gmail.com>
+Maintainer-email: Maher Bisan <maherbisan95@gmail.com>, Dareen Khair <maherbisan95@gmail.com>
 License: MIT License
         
         Copyright (c) 2023 Maher Bisan
