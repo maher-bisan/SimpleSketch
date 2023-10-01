@@ -1,6 +1,7 @@
 .venv/
 
 dist/
+build/
 
 src/simple_sketch.egg-info/
 src/SimpleSketch.egg-info/
